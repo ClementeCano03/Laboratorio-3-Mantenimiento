@@ -53,8 +53,8 @@ public class ronQI2Silvertest {
      */
 
     @Test
-    @DisplayName("Si es posible conectar ambos sensores y configurarlos, inicializar debe devolver true")
-    public void reconectar_WithSensorsWorksCorrectly_ReturnTrue(){
+    @DisplayName("Si no esta conectado, reconectamos el dispositivo")
+    public void reconectar_Device_ReturnTrue(){
         RonQI2 ronqi2 = new RonQI2Silver();
 
         Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
