@@ -5,6 +5,7 @@
  */
 package org.mps.ronqi2;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -73,9 +74,90 @@ public class ronQI2Silvertest {
      * El método evaluarApneaSuenyo, evalua las últimas 5 lecturas realizadas con obtenerNuevaLectura(), 
      * y si ambos sensores superan o son iguales a sus umbrales, que son thresholdP = 20.0f y thresholdS = 30.0f;, 
      * se considera que hay una apnea en proceso. Si hay menos de 5 lecturas también debería realizar la media.
-     * /
-     
-     /* Realiza un primer test para ver que funciona bien independientemente del número de lecturas.
+     */
+    
+    @Test
+    @DisplayName("Si ambos sensores son menores a sus umbrales, no hay apnea del sueño")
+    public void evaluarApneaSuenyo_WithSensorValuesGreaterThanThresholds_ReturnsFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(0.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(0.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        Dispositivo mockedDispositivo2 = mock(DispositivoSilver.class);
+        when(mockedDispositivo2.leerSensorPresion()).thenReturn(5.0f);
+        when(mockedDispositivo2.leerSensorSonido()).thenReturn(1.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo2);
+
+        Dispositivo mockedDispositivo3 = mock(DispositivoSilver.class);
+        when(mockedDispositivo3.leerSensorPresion()).thenReturn(2.0f);
+        when(mockedDispositivo3.leerSensorSonido()).thenReturn(3.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo3);
+
+        Dispositivo mockedDispositivo4 = mock(DispositivoSilver.class);
+        when(mockedDispositivo4.leerSensorPresion()).thenReturn(4.0f);
+        when(mockedDispositivo4.leerSensorSonido()).thenReturn(6.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo4);
+
+        Dispositivo mockedDispositivo5 = mock(DispositivoSilver.class);
+        when(mockedDispositivo5.leerSensorPresion()).thenReturn(1.0f);
+        when(mockedDispositivo5.leerSensorSonido()).thenReturn(0.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo5);
+        
+        boolean result = ronqi2.evaluarApneaSuenyo();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Si ambos sensores son mayores a sus umbrales, hay apnea del sueño")
+    public void evaluarApneaSuenyo_WithSensorValuesLessThanThresholds_ReturnsFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(7.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(8.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        Dispositivo mockedDispositivo2 = mock(DispositivoSilver.class);
+        when(mockedDispositivo2.leerSensorPresion()).thenReturn(5.0f);
+        when(mockedDispositivo2.leerSensorSonido()).thenReturn(10.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo2);
+
+        Dispositivo mockedDispositivo3 = mock(DispositivoSilver.class);
+        when(mockedDispositivo3.leerSensorPresion()).thenReturn(3.0f);
+        when(mockedDispositivo3.leerSensorSonido()).thenReturn(3.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo3);
+
+        Dispositivo mockedDispositivo4 = mock(DispositivoSilver.class);
+        when(mockedDispositivo4.leerSensorPresion()).thenReturn(4.0f);
+        when(mockedDispositivo4.leerSensorSonido()).thenReturn(6.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo4);
+
+        Dispositivo mockedDispositivo5 = mock(DispositivoSilver.class);
+        when(mockedDispositivo5.leerSensorPresion()).thenReturn(2.0f);
+        when(mockedDispositivo5.leerSensorSonido()).thenReturn(4.0f);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo5);
+        
+        boolean result = ronqi2.evaluarApneaSuenyo();
+
+        assertTrue(result);
+    }
+    
+    
+    /* Realiza un primer test para ver que funciona bien independientemente del número de lecturas.
      * Usa el ParameterizedTest para realizar un número de lecturas previas a calcular si hay apnea o no (por ejemplo 4, 5 y 10 lecturas).
      * https://junit.org/junit5/docs/current/user-guide/index.html#writing-tests-parameterized-tests
      */
