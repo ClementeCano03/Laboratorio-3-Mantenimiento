@@ -5,6 +5,14 @@
  */
 package org.mps.ronqi2;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mps.dispositivo.Dispositivo;
+import org.mps.dispositivo.DispositivoSilver;
 
 public class ronQI2Silvertest {
 
@@ -15,6 +23,7 @@ public class ronQI2Silvertest {
      * el método inicializar de ronQI2 o sus subclases, 
      * debería devolver true. En cualquier otro caso false. Se deja programado un ejemplo.
      */
+
     
     /*
      * Un inicializar debe configurar ambos sensores, comprueba que cuando se inicializa de forma correcta (el conectar es true), 
@@ -37,4 +46,26 @@ public class ronQI2Silvertest {
      * Usa el ParameterizedTest para realizar un número de lecturas previas a calcular si hay apnea o no (por ejemplo 4, 5 y 10 lecturas).
      * https://junit.org/junit5/docs/current/user-guide/index.html#writing-tests-parameterized-tests
      */
+
+     @Test
+     @DisplayName ("Inicializamos el constructor")
+     public void iniciazateConstructor_WorksProperly(){
+        Dispositivo mocked = mock(DispositivoSilver.class);
+
+        RonQI2Silver ronquiSilver = new RonQI2Silver(); 
+        
+        when(mocked.conectarSensorPresion()).thenReturn(true);
+        when(mocked.conectarSensorSonido()).thenReturn(true);
+        when(mocked.configurarSensorPresion()).thenReturn(true);
+        when(mocked.configurarSensorSonido()).thenReturn(true);
+
+        assertTrue(ronquiSilver.inicializar());
+
+
+
+        
+        
+
+     }
+     
 }

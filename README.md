@@ -11,6 +11,7 @@ Los nombres de los casos de prueba son auto-explicativos y los tests son claros.
 Los casos de prueba cubren las principales situaciones que pueden dar lugar a errores.
 Conseguir una cobertura de código del 100% en las clases mencionadas.
 Descubrir al menos 3 errores en el código y corregirlos.
+
 Entregables
 Un fichero comprimido con el proyecto Maven (pom.xml y directorio src).
 Indica el nombre del grupo en la entrega y los ficheros del proyecto
