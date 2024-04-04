@@ -51,6 +51,22 @@ public class ronQI2Silvertest {
      * Genera las pruebas que estimes oportunas para comprobar su correcto funcionamiento. 
      * Centrate en probar si todo va bien, o si no, y si se llama a los métodos que deben ser llamados.
      */
+    @Test
+    @DisplayName("Si no esta conectado, reconectamos el dispositivo")
+    public void reconectar_Device_ReturnTrue(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(false);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.reconectar();
+
+        assertTrue(result);
+    }
     
     /*
      * El método evaluarApneaSuenyo, evalua las últimas 5 lecturas realizadas con obtenerNuevaLectura(), 
