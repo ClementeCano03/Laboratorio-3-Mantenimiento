@@ -1,6 +1,6 @@
 # Laboratorio-3-Mantenimiento
 
-Objetivo
+El objetivo de la práctica es: 
 Dado un proyecto para la detección de ronquidos, se pide realizar las pruebas unitarias correspondientes para probar determinadas funcionalidades que están aún en desarrollo, como el nuevo dispositivo RonQi2Silver. El dispositivo a partir de medidas de presión y sonido evalua si ha habido apnea del sueño.
 
 Requisitos
