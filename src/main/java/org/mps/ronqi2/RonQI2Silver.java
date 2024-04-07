@@ -65,6 +65,4 @@ public class RonQI2Silver extends RonQI2{
         return resultado;
     }
 
-
-    
 }

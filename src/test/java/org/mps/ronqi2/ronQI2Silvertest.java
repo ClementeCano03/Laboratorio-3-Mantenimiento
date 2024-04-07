@@ -112,6 +112,10 @@ public class ronQI2SilverTest {
         when(mockedDispositivo.leerSensorSonido()).thenReturn(1.0f);
         ronqi2.obtenerNuevaLectura();
 
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(2.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(0.0f);
+        ronqi2.obtenerNuevaLectura();
+
         boolean result = ronqi2.evaluarApneaSuenyo();
 
         assertFalse(result);
