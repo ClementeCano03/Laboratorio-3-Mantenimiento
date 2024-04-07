@@ -112,7 +112,7 @@ public class ronQI2SilverTest {
     }
 
     @Test
-    @DisplayName("Si no es posible configurar el sensor de sonido, inicializar debe devolver false")
+    @DisplayName("Si no es posible configurar ninguno de los sensores, inicializar debe devolver false")
     public void inicializar_WithoutConfigureBothSensors_ReturnFalse(){
         RonQI2 ronqi2 = new RonQI2Silver();
 
