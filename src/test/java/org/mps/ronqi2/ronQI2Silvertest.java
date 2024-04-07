@@ -102,7 +102,7 @@ public class ronQI2SilverTest {
     }
 
     @Test
-    @DisplayName("Si no esta conectado, reconectamos el dispositivo, pero falla al conectar el sensor de presión")
+    @DisplayName("Si el dispositivo ya está conectado, reconectar devuelve false")
     public void reconectar_DeviceIsConected_ReturnFalse(){
         RonQI2 ronqi2 = new RonQI2Silver();
 
