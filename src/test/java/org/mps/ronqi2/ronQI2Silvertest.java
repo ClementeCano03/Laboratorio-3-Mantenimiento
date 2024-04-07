@@ -122,6 +122,44 @@ public class ronQI2SilverTest {
     }
 
     @Test
+    @DisplayName("Si un sensor es menor al umbral y el otro es mayor, no hay apnea del sueño")
+    public void evaluarApneaSuenyo_WithOneSensorValuesLessThanThresholdsAndOtherNot_ReturnsFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(2.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(41.0f);
+        ronqi2.obtenerNuevaLectura();
+        
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(4.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(32.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(0.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(31.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(1.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(52.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(3.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(61.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(2.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(40.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        boolean result = ronqi2.evaluarApneaSuenyo();
+
+        assertFalse(result);
+    }
+
+    @Test
     @DisplayName("Si ambos sensores son mayores a sus umbrales, hay apnea del sueño")
     public void evaluarApneaSuenyo_WithSensorValuesGreaterThanThresholds_ReturnsTrue(){
         RonQI2 ronqi2 = new RonQI2Silver();
@@ -148,6 +186,30 @@ public class ronQI2SilverTest {
 
         when(mockedDispositivo.leerSensorPresion()).thenReturn(50.0f);
         when(mockedDispositivo.leerSensorSonido()).thenReturn(31.0f);
+        ronqi2.obtenerNuevaLectura();
+
+        boolean result = ronqi2.evaluarApneaSuenyo();
+
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("Si ambos sensores son iguales a sus umbrales, hay apnea del sueño")
+    public void evaluarApneaSuenyo_WithSensorValuesEqualsToThresholds_ReturnsTrue(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(20.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(30.0f);
+        ronqi2.obtenerNuevaLectura();
+        
+        when(mockedDispositivo.leerSensorPresion()).thenReturn(20.0f);
+        when(mockedDispositivo.leerSensorSonido()).thenReturn(30.0f);
+        ronqi2.obtenerNuevaLectura();
+
         ronqi2.obtenerNuevaLectura();
 
         boolean result = ronqi2.evaluarApneaSuenyo();
