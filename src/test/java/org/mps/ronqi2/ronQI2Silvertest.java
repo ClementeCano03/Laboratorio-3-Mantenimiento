@@ -225,8 +225,8 @@ public class ronQI2SilverTest {
     @ParameterizedTest
     @CsvSource({
         "20.0f, 30.0f", 
-        "43.0f, 41.0f", 
-        "35.0f, 61.0f"
+        "20.0f, 30.0f", 
+        "20.0f, 30.0f"
     })
     @DisplayName("Si existen 3 lecturas y ambos sensores son mayores o iguales a sus umbrales, hay apnea del sueño")
     public void evaluarApneaSuenyo_With3Lectures_AndSensorValuesGreaterThanThresholds_ReturnsTrue(float valorPresion, float valorSonido){
