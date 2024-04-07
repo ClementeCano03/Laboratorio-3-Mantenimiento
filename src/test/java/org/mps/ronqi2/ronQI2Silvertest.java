@@ -224,7 +224,7 @@ public class ronQI2SilverTest {
 
     @ParameterizedTest
     @CsvSource({
-        "21.0f, 32.0f", 
+        "20.0f, 30.0f", 
         "43.0f, 41.0f", 
         "35.0f, 61.0f"
     })
