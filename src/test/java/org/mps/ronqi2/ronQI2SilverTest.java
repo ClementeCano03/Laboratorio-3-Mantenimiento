@@ -158,6 +158,87 @@ public class ronQI2SilverTest {
      * Genera las pruebas que estimes oportunas para comprobar su correcto funcionamiento. 
      * Centrate en probar si todo va bien, o si no, y si se llama a los métodos que deben ser llamados.
      */
+    @Test
+    @DisplayName("Si no esta conectado, reconectamos el dispositivo")
+    public void reconectar_DeviceWithCorrectValues_ReturnTrue(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(false);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.reconectar();
+
+        assertTrue(result);
+
+        verify(mockedDispositivo).estaConectado(); //si no se pone times(), se entiende que es una sola vez
+        verify(mockedDispositivo).conectarSensorSonido();
+        verify(mockedDispositivo).conectarSensorPresion();
+
+    }
+
+    @Test
+    @DisplayName("Si no esta conectado, reconectamos el dispositivo, pero falla al conectar el sensor de sonido")
+    public void reconectar_DeviceFailSoundSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(false);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(false);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.reconectar();
+
+        assertFalse(result);
+
+        verify(mockedDispositivo).estaConectado(); 
+        verify(mockedDispositivo).conectarSensorSonido();
+        verify(mockedDispositivo).conectarSensorPresion();
+
+    }
+
+    @Test
+    @DisplayName("Si no esta conectado, reconectamos el dispositivo, pero falla al conectar el sensor de presión")
+    public void reconectar_DeviceFailPressureSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(false);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(false);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.reconectar();
+
+        assertFalse(result);
+
+        verify(mockedDispositivo).estaConectado();
+        verify(mockedDispositivo).conectarSensorPresion();
+
+    }
+
+    @Test
+    @DisplayName("Si el dispositivo ya está conectado, reconectar devuelve false")
+    public void reconectar_DeviceIsConected_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(true);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.reconectar();
+
+        assertFalse(result);
+
+        verify(mockedDispositivo).estaConectado();
+
+    }
     
     /*
      * El método evaluarApneaSuenyo, evalua las últimas 5 lecturas realizadas con obtenerNuevaLectura(), 
