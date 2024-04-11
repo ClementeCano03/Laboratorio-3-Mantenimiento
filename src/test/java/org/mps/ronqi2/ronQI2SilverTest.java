@@ -227,7 +227,7 @@ public class ronQI2SilverTest {
 
     @Test
     @DisplayName("Si el dispositivo ya está conectado, reconectar devuelve false")
-    public void reconectar_DeviceIsConected_ReturnFalse(){
+    public void reconectar_DeviceIsConnected_ReturnFalse(){
         RonQI2 ronqi2 = new RonQI2Silver();
 
         Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
@@ -241,6 +241,36 @@ public class ronQI2SilverTest {
 
         verify(mockedDispositivo).estaConectado();
 
+    }
+
+    @Test
+    @DisplayName("Si el dispositivo está conectado, estaConectado devuelve true")
+    public void estaConectado_DeviceIsConnected_ReturnTrue(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(true);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.estaConectado();
+
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("Si el dispositivo está conectado, estaConectado devuelve true")
+    public void estaConectado_DeviceIsNotConnected_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.estaConectado()).thenReturn(false);
+
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.estaConectado();
+
+        assertFalse(result);
     }
     
     /*
