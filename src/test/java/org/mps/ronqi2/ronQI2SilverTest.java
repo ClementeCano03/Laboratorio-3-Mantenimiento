@@ -7,14 +7,15 @@ package org.mps.ronqi2;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mps.dispositivo.Dispositivo;
 import org.mps.dispositivo.DispositivoSilver;
 
-public class ronQI2Silvertest {
+public class ronQI2SilverTest {
 
     
     /*
@@ -41,33 +42,122 @@ public class ronQI2Silvertest {
         assertTrue(result);
     }
 
+    @Test
+    @DisplayName("Si no es posible conectar el sensor de presión, inicializar devuelve false")
+    public void inicializar_WithoutConnectPressureSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(false);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.inicializar();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Si no es posible conectar el sensor de sonido, inicializar devuelve false")
+    public void inicializar_WithoutConnectSoundSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(false);
+        when(mockedDispositivo.configurarSensorPresion()).thenReturn(true);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.inicializar();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Si no es posible configurar el sensor de presion, inicializar debe devolver false")
+    public void inicializar_WithoutConfigureThePressureSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorPresion()).thenReturn(false);
+        when(mockedDispositivo.configurarSensorSonido()).thenReturn(true);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.inicializar();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Si no es posible configurar el sensor de sonido, inicializar debe devolver false")
+    public void inicializar_WithoutConfigureTheSoundSensor_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorSonido()).thenReturn(false);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.inicializar();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Si no es posible configurar ninguno de los sensores, inicializar debe devolver false")
+    public void inicializar_WithoutConfigureBothSensors_ReturnFalse(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorPresion()).thenReturn(false);
+        when(mockedDispositivo.configurarSensorSonido()).thenReturn(false);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        boolean result = ronqi2.inicializar();
+
+        assertFalse(result);
+    }
+
+
     /*
      * Un inicializar debe configurar ambos sensores, comprueba que cuando se inicializa de forma correcta (el conectar es true), 
      * se llama una sola vez al configurar de cada sensor.
      */
+
+    @Test
+    @DisplayName("Verificar que al llamar a inicializar, se llama una sola vez al configurar de cada sensor")
+    public void inicializar_verifyThatWhenCallInicializar_OnlyCallsOnceConfigureSensors(){
+        RonQI2 ronqi2 = new RonQI2Silver();
+
+        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
+        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorPresion()).thenReturn(true);
+        when(mockedDispositivo.configurarSensorSonido()).thenReturn(true);
+       
+        ronqi2.anyadirDispositivo(mockedDispositivo);
+
+        ronqi2.inicializar();
+
+        verify(mockedDispositivo).configurarSensorPresion();
+        verify(mockedDispositivo).configurarSensorSonido();
+    }
 
     /*
      * Un reconectar, comprueba si el dispositivo desconectado, en ese caso, conecta ambos y devuelve true si ambos han sido conectados. 
      * Genera las pruebas que estimes oportunas para comprobar su correcto funcionamiento. 
      * Centrate en probar si todo va bien, o si no, y si se llama a los métodos que deben ser llamados.
      */
-
-    @Test
-    @DisplayName("Si no esta conectado, reconectamos el dispositivo")
-    public void reconectar_Device_ReturnTrue(){
-        RonQI2 ronqi2 = new RonQI2Silver();
-
-        Dispositivo mockedDispositivo = mock(DispositivoSilver.class);
-        when(mockedDispositivo.estaConectado()).thenReturn(false);
-        when(mockedDispositivo.conectarSensorSonido()).thenReturn(true);
-        when(mockedDispositivo.conectarSensorPresion()).thenReturn(true);
-
-        ronqi2.anyadirDispositivo(mockedDispositivo);
-
-        boolean result = ronqi2.reconectar();
-
-        assertTrue(result);
-    }
     
     /*
      * El método evaluarApneaSuenyo, evalua las últimas 5 lecturas realizadas con obtenerNuevaLectura(), 
